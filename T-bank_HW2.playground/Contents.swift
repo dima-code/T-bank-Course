@@ -34,7 +34,7 @@ var correct: Bool = true
 for letter in string2 {
     if letter == "(" {
         openingBrackets += 1
-    } else{
+    } else if letter == ")" {
         closingBrackets += 1
     }
 
@@ -86,11 +86,11 @@ if correct{
 // *****Задача 4*****
 
 /*
- 
-let dict4: [String:Int?] = ["A": 4, "B": 4, "C": 4] // Входные данные
+// Заменил тип на Double
+let dict4: [String:Double?] = ["A": 4, "B": 5, "C": 4] // Входные данные
 
-var studentsSucceed: Int = 0
-var pointsSum: Int = 0
+var studentsSucceed: Double = 0
+var pointsSum: Double = 0
 
 for (_, value) in dict4 {
     if let mark = value {
@@ -110,30 +110,34 @@ if studentsSucceed == 0{
 
 
 // *****Задача 5*****
-
 /*
+let array5: [operations] = [.plus(1, 2), .square(2), .minus(100, 50), .division(123, 44), .squareRoot(4)] // Входные данные
+
 enum operations{
     case plus(Int, Int)
     case minus(Int, Int)
     case square(Int)
     case division(Double, Double)
     case squareRoot(Double)
+    
+    var result: String{ // Перенес логику внуть enum
+        switch self{
+            case .plus(let a,let b):
+                return "Сумма - \(a + b)"
+            case .minus(let a,let b):
+                return ("Разность - \(a - b)")
+            case .square(let a):
+                return ("Квадрат - \(a*a)")
+            case .division(let a,let b):
+                return ("Деление - \(a/b)")
+            case .squareRoot(let a):
+                return ("Квадратный корень - \(pow(a, 0.5))")
+        }
+    }
+    
 }
 
-let array5 = [operations.plus(1, 2), operations.square(2), operations.minus(100, 50), operations.division(123, 44), operations.squareRoot(4)] // Входные данные
-
 for operation in array5{
-    switch operation{
-    case .plus(let a,let b):
-        print("Сумма - \(a + b)")
-    case .minus(let a,let b):
-        print("Разность - \(a - b)")
-    case .square(let a):
-        print("Квадрат - \(a*a)")
-    case .division(let a,let b):
-        print("Деление - \(a/b)")
-    case .squareRoot(let a):
-        print("Квадратный корень - \(pow(a, 0.5))")
-    }
+    print(operation.result)
 }
 */
