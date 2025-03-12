@@ -42,13 +42,13 @@ struct Book {
         case fiction
         case novel
         case poems
-        case any
+        case other
     }
 }
 
 
 
-class Library{
+class Library {
     
     var сatalog = [Book]()
     
@@ -56,7 +56,7 @@ class Library{
         сatalog.append(book)
     }
 
-    func filterBooks(byGenre genre: Book.Genres = .any, byName name: String? = nil) -> [Book]{ // Фильтр по жанру и названию
+    func filterBooks(byGenre genre: Book.Genres = .other, byName name: String? = nil) -> [Book] { // Фильтр по жанру и названию
         if let name = name {
             return сatalog.filter{$0.title.lowercased().contains(name.lowercased())} // Фильтр по названию
             
