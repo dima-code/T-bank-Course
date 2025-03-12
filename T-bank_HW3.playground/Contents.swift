@@ -32,7 +32,7 @@ struct Book {
     let price: Double
     let genre: Genres
     
-    enum Genres{
+    enum Genres: String {
         case fantasty
         case science
         case horror
@@ -50,18 +50,18 @@ struct Book {
 
 class Library{
     
-    var сatalog: [Book] = []
+    var сatalog = [Book]()
     
-    func addBook(bookToAdd: Book) {
-        сatalog.append(bookToAdd)
+    func addBook(_ book: Book) {
+        сatalog.append(book)
     }
 
-    func filterBooks(by: Book.Genres = .any, byName: String? = nil) -> [Book]{ // Фильтр по жанру и названию
+    func filterBooks(byGenre: Book.Genres = .any, byName: String? = nil) -> [Book]{ // Фильтр по жанру и названию
         if let name = byName{
-            return (сatalog.filter{$0.title.lowercased().contains(name.lowercased())})
-
+            return сatalog.filter{$0.title.lowercased().contains(name.lowercased())} // Фильтр по названию
+            
         } else{
-            return (сatalog.filter{$0.genre == by})
+            return сatalog.filter{$0.genre == byGenre} // Фильтр по жанру
         }
     }
 }
@@ -70,13 +70,13 @@ class User{
     var name: String
     var discount: Double
     var cart: [Book] = []
-    enum sorting{
+    enum Sorting {
         case price
         case alphabet
     }
     
-    func addToCart(bookToAdd: [Book]){
-        cart += bookToAdd
+    func addToCart(_ book: [Book]){
+        cart += book
     }
     
     func totalPrice()-> Double{
@@ -87,14 +87,14 @@ class User{
         return sum * ((100 - discount) / 100)
     }
     
-    func sortedListOfBooks(by: sorting) -> [Book]{
+    func sortedListOfBooks(sortBy: Sorting) -> [Book]{
         let sortedList: [Book]
-        switch by {
-        case .alphabet:
-            sortedList = cart.sorted{ $0.title < $1.title }
-        case .price:
-            sortedList = cart.sorted{ $0.price < $1.price}
-        }
+        switch sortBy {
+            case .alphabet:
+                sortedList = cart.sorted{ $0.title < $1.title }
+            case .price:
+                sortedList = cart.sorted{ $0.price < $1.price}
+            }
         return sortedList
     }
     
@@ -111,7 +111,7 @@ class User{
 
 let library = Library()
 library.addBook(
-    bookToAdd: Book(
+    Book(
         title: "Гарри Поттер и философский камень",
         author: "Дж.К. Роулинг",
         price: 1000,
@@ -120,7 +120,7 @@ library.addBook(
 )
 
 library.addBook(
-    bookToAdd: Book(
+    Book(
         title: "Война и мир",
         author: "Лев Толстой",
         price: 850,
@@ -128,7 +128,7 @@ library.addBook(
     )
 )
 library.addBook(
-    bookToAdd: Book(
+    Book(
         title: "Стихотворение",
         author: "Владимир Маяковский",
         price: 540,
@@ -137,10 +137,10 @@ library.addBook(
 )
 
 let user = User(name: "Алиса", discount: 1.5)
-let novelBooks = library.filterBooks(by: .novel)
-user.addToCart(bookToAdd: novelBooks)
+let novelBooks = library.filterBooks(byGenre: .novel)
+user.addToCart(novelBooks)
 let booksWithName = library.filterBooks(byName: "Гарри")
-user.addToCart(bookToAdd: booksWithName)
+user.addToCart(booksWithName)
 
-print("Итоговая корзина: \(user.sortedListOfBooks(by: .price))")
+print("Итоговая корзина: \(user.sortedListOfBooks(sortBy: .price))")
 print("Цена корзины: \(user.totalPrice())")
