@@ -56,17 +56,17 @@ class Library{
         сatalog.append(book)
     }
 
-    func filterBooks(byGenre: Book.Genres = .any, byName: String? = nil) -> [Book]{ // Фильтр по жанру и названию
-        if let name = byName{
+    func filterBooks(byGenre genre: Book.Genres = .any, byName name: String? = nil) -> [Book]{ // Фильтр по жанру и названию
+        if let name = name {
             return сatalog.filter{$0.title.lowercased().contains(name.lowercased())} // Фильтр по названию
             
-        } else{
-            return сatalog.filter{$0.genre == byGenre} // Фильтр по жанру
+        } else {
+            return сatalog.filter{$0.genre == genre} // Фильтр по жанру
         }
     }
 }
 
-class User{
+class User {
     var name: String
     var discount: Double
     var cart: [Book] = []
@@ -75,11 +75,11 @@ class User{
         case alphabet
     }
     
-    func addToCart(_ book: [Book]){
+    func addToCart(_ book: [Book]) {
         cart += book
     }
     
-    func totalPrice()-> Double{
+    func totalPrice()-> Double {
         var sum: Double = 0
         for book in cart{
             sum += book.price
@@ -87,13 +87,13 @@ class User{
         return sum * ((100 - discount) / 100)
     }
     
-    func sortedListOfBooks(sortBy: Sorting) -> [Book]{
+    func sortedListOfBooks(sortBy: Sorting) -> [Book] {
         let sortedList: [Book]
         switch sortBy {
             case .alphabet:
-                sortedList = cart.sorted{ $0.title < $1.title }
+                sortedList = cart.sorted{$0.title < $1.title}
             case .price:
-                sortedList = cart.sorted{ $0.price < $1.price}
+                sortedList = cart.sorted{$0.price < $1.price}
             }
         return sortedList
     }
