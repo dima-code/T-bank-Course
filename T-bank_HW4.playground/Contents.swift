@@ -1,17 +1,16 @@
-import UIKit
 import Foundation
 
 // Протокол предметов
 protocol Item {
     var name: String { get }
-    func use(by character: GameCharacter)
+    func used(by character: GameCharacter)
 }
 
 // Лечебное зелье
 class HealthPotionItem: Item {
-    var name: String = "Health Potion"
+    let name: String = "Health Potion"
     
-    func use(by character: GameCharacter) {
+    func used(by character: GameCharacter) {
         print("\(character.name) drinks \(name) and restores health.")
         character.heal(amount: 20)
     }
@@ -21,14 +20,22 @@ class HealthPotionItem: Item {
 class MagicPoisonItem: Item {
     var name: String = "Magic Poison"
 
-    func use(by character: GameCharacter) {
+    func used(by character: GameCharacter) {
         print("\(character.name) used \(name) and took damage!")
         character.takeDamage(amount: 15)
     }
 }
 
+protocol Healable {
+    func heal(amount: Int)
+}
+
+protocol Damagable {
+    func takeDamage(amount: Int)
+}
+
 // Базовый класс: Персонаж
-class GameCharacter {
+class GameCharacter: Healable, Damagable {
     var inventory: [Item] = [] // Инвентарь
     var name: String
     var health: Int
@@ -40,7 +47,7 @@ class GameCharacter {
     }
     
     func useItem(_ item: Item) {
-        item.use(by: self)
+        item.used(by: self)
     }
 
     func viewInventory() { // Просмотр инвентаря
@@ -125,16 +132,16 @@ class Mage: GameCharacter, Flyable {
     var flightSpeed: Int
     var magicPower: Int
     
-    enum Spells {
-        case abraCadabra
-        case fireball
-        case lightning
+    enum Spells: Int {
+        case abraCadabra = 90
+        case fireball = 80
+        case lightning = 50
     }
     
     enum Items: CaseIterable {
         case healthPotion, magicPoison
 
-        func toItem() -> Item {
+        func availableItems() -> Item {
             switch self {
             case .healthPotion:
                 return HealthPotionItem()
@@ -146,7 +153,7 @@ class Mage: GameCharacter, Flyable {
 
     func fly() {
         if let randomItem = Items.allCases.randomElement() {
-            let newItem = randomItem.toItem()
+            let newItem = randomItem.availableItems()
             addItem(newItem)
             print("\(name) flew and found a random item: \(newItem.name)!")
         } else {
@@ -160,7 +167,7 @@ class Mage: GameCharacter, Flyable {
             return
         }
         
-        let damage = magicPower + level
+        let damage = spellName.rawValue + level + magicPower
         target.takeDamage(amount: damage)
         print("\(name) casts \(spellName) on \(target.name) for \(damage) damage!")
     }
@@ -182,7 +189,7 @@ protocol Flyable {
 
 // Создаем персонажей
 var warrior = Warrior(name: "SpiderMan", health: 100, level: 450, strength: 708, agility: 40)
-var mage = Mage(name: "Dr. Strange", health: 1000, level: 55, flightSpeed: 90, magicPower: 99)
+var mage = Mage(name: "Dr. Strange", health: 10000, level: 55, flightSpeed: 90, magicPower: 99)
 
 // Создаем предметы
 let magicPoison = MagicPoisonItem()
