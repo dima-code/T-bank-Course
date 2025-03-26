@@ -44,7 +44,7 @@ class Car {
  }
 
  class Car {
-     var owner: Person?
+     var owner: Person? // Сильная ссылка, не дает освободить связь из памяти
      
      init(owner: Person? = nil) {
          self.owner = owner
