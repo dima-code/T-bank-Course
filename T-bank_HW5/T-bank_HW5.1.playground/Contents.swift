@@ -1,10 +1,14 @@
+import Foundation
+
 class Person {
     let name: String
     var ownedCar: Car?
     
-    init(name: String) {
+    init(name: String, car: Car? = nil) {
         self.name = name
+        self.ownedCar = car
     }
+    
     deinit{
         print("Person instance is free")
     }
@@ -13,7 +17,10 @@ class Person {
 class Car {
     weak var owner: Person? // Используем weak ссылку при объявлении свойства owner класса Car
     
-
+    init(owner: Person? = nil) {
+        self.owner = owner
+    }
+    
     deinit{
         print("Car instance is free")
     }
@@ -28,9 +35,11 @@ car1 = Car()
 person1?.ownedCar = car1
 car1?.owner = person1
 
+print(CFGetRetainCount(person1))
+print(CFGetRetainCount(car1))
 
 // Присваиваем экземплярам nil чтобы освободить из памяти
-// Иначе deinit не сработает, количество ссылок будет смотреть черезC FGetRetainCount
+// Иначе deinit не сработает, количество ссылок надо будет смотреть через CFGetRetainCount
 person1 = nil
 car1 = nil
 
