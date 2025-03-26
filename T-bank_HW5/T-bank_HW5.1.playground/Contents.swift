@@ -26,6 +26,35 @@ class Car {
     }
 }
 
+// Реализация с сильной ссылкой
+/*
+
+ class Person {
+     let name: String
+     var ownedCar: Car?
+     
+     init(name: String, car: Car? = nil) {
+         self.name = name
+         self.ownedCar = car
+     }
+     
+     deinit{
+         print("Person instance is free")
+     }
+ }
+
+ class Car {
+     var owner: Person?
+     
+     init(owner: Person? = nil) {
+         self.owner = owner
+     }
+     
+     deinit{
+         print("Car instance is free")
+     }
+ }
+ */
 var person1: Person?
 var car1: Car?
 
@@ -40,6 +69,7 @@ print(CFGetRetainCount(car1))
 
 // Присваиваем экземплярам nil чтобы освободить из памяти
 // Иначе deinit не сработает, количество ссылок надо будет смотреть через CFGetRetainCount
+// Для проверки с сильными ссылками убираем weak из Car
 person1 = nil
 car1 = nil
 
