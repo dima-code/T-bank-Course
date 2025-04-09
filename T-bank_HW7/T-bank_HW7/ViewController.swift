@@ -133,10 +133,13 @@ class LayoutViewController: UIViewController {
             itemImage.heightAnchor.constraint(equalTo: itemImage.widthAnchor, multiplier: 0.8),
             
             brandLabel.topAnchor.constraint(equalTo: itemImage.bottomAnchor, constant: 16),
+            brandLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
             
             titleLabel.topAnchor.constraint(equalTo: brandLabel.bottomAnchor, constant: 10),
+            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
             
             priceLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            priceLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
             
             mainButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             mainButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
