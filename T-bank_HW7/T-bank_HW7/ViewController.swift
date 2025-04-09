@@ -14,29 +14,26 @@ class LayoutViewController: UIViewController {
     private var titleLabel: UILabel?
     private var mainButton: UIButton?
     private var itemImage: UIImageView?
-    var itemIndex: Int = 0 // Индекс текущего товара
+    private var itemIndex: Int = 0 // Индекс текущего товара
+    private var currentItem: Item = mockItemList[0]
     
     
     override func viewDidLoad() {
+        currentItem = itemList[itemIndex]
         super.viewDidLoad()
         view.backgroundColor = .black
         
-
-        setupItemCard(itemList[itemIndex])
+        setupButton()
+        setupItemCard(currentItem)
 
         }
-
-
-        
-        
-    
     
     private func setupItemCard(_ item: Item) { // Отображение карточки товара
         setupImageView(item.imageName)
         setupBrandName(item.brandName)
         setupPrice(item.price)
         setupTitleLabel(item.itemName)
-        setupButton()
+
         setupConstraints()
     }
     
@@ -65,7 +62,7 @@ class LayoutViewController: UIViewController {
         itemIndex = (itemIndex + 1) % itemList.count
         clearItemCard()
         setupItemCard(itemList[itemIndex])
-        print(itemIndex)
+//        print(itemIndex)
     }
     
     private func setupBrandName(_ brand: String) { // Название бренда
@@ -111,22 +108,23 @@ class LayoutViewController: UIViewController {
         let imageView = UIImageView(image: image!)
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-
         
         view.addSubview(imageView)
-        
         itemImage = imageView
     }
     
     private func setupConstraints() {
-        guard let brandLabel, let mainButton, let itemImage, let priceLabel, let titleLabel else { return }
+        guard let brandLabel,
+              let mainButton,
+              let itemImage,
+              let priceLabel,
+              let titleLabel else { return }
         
         brandLabel.translatesAutoresizingMaskIntoConstraints = false
         priceLabel.translatesAutoresizingMaskIntoConstraints = false
         mainButton.translatesAutoresizingMaskIntoConstraints = false
         itemImage.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        
         
         NSLayoutConstraint.activate([
             itemImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),

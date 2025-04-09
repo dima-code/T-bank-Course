@@ -19,6 +19,12 @@ struct Item: Addable {
     var itemId: Int
 }
 
+var mockItemList: [Item] = [Item(brandName: "New Balance",
+                                 itemName: "New Balance 1906R",
+                                 imageName: "NB",
+                                 price: "22 990",
+                                 itemId: 0)]
+
 var itemList: [Item] = [
     Item(brandName: "New Balance",
          itemName: "New Balance 1906R",
