@@ -58,8 +58,6 @@ class LayoutViewController: UIViewController {
         itemImage?.image = UIImage(named: Items.itemList[itemIndex].imageName)
         titleLabel?.text = Items.itemList[itemIndex].itemName
         priceLabel?.text = Items.itemList[itemIndex].price
-//        clearItemCard()
-//        setupItemCard(Items.itemList[itemIndex])
 //        print(itemIndex)
     }
     
