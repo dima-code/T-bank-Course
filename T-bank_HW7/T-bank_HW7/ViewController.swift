@@ -15,11 +15,11 @@ class LayoutViewController: UIViewController {
     private var mainButton: UIButton?
     private var itemImage: UIImageView?
     private var itemIndex: Int = 0 // Индекс текущего товара
-    private var currentItem: Item = mockItemList[0]
+    private var currentItem: Items.Item = Items.itemList[0]
     
     
     override func viewDidLoad() {
-        currentItem = itemList[itemIndex]
+        currentItem = Items.itemList[itemIndex]
         super.viewDidLoad()
         view.backgroundColor = .black
         
@@ -28,20 +28,13 @@ class LayoutViewController: UIViewController {
 
         }
     
-    private func setupItemCard(_ item: Item) { // Отображение карточки товара
+    private func setupItemCard(_ item: Items.Item) { // Отображение карточки товара
         setupImageView(item.imageName)
         setupBrandName(item.brandName)
         setupPrice(item.price)
         setupTitleLabel(item.itemName)
 
         setupConstraints()
-    }
-    
-    private func clearItemCard() { // Очистка карточки товара
-        itemImage?.removeFromSuperview()
-        brandLabel?.removeFromSuperview()
-        titleLabel?.removeFromSuperview()
-        priceLabel?.removeFromSuperview()
     }
     
     private func setupButton() { // Кнопка переключения товара
@@ -59,9 +52,14 @@ class LayoutViewController: UIViewController {
     }
 
     @objc private func didTapButton() { // Нажатием увеличиваем индекс, удаляем старую и отрисовываем новую карточку
-        itemIndex = (itemIndex + 1) % itemList.count
-        clearItemCard()
-        setupItemCard(itemList[itemIndex])
+        itemIndex = (itemIndex + 1) % Items.itemList.count
+        
+        brandLabel?.text = Items.itemList[itemIndex].brandName
+        itemImage?.image = UIImage(named: Items.itemList[itemIndex].imageName)
+        titleLabel?.text = Items.itemList[itemIndex].itemName
+        priceLabel?.text = Items.itemList[itemIndex].price
+//        clearItemCard()
+//        setupItemCard(Items.itemList[itemIndex])
 //        print(itemIndex)
     }
     
