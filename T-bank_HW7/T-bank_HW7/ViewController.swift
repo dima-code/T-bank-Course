@@ -20,12 +20,12 @@ class LayoutViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupView()
+        setupItemView()
 
 
         }
     
-    private func setupView() {
+    private func setupItemView() {
         view.backgroundColor = .black
         setupButton()
         setupItemCard(currentItem)
