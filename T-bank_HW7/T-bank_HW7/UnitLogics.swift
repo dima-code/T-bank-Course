@@ -1,16 +1,16 @@
 // База с карточками товаров
-class Items {
-    
-    struct Item {
-        var brandName: String
-        var itemName: String
-        var imageName: String
-        var price: String
-        var oldPrice: String?
-        var itemId: Int
-    }
 
-    static let itemList: [Item] = [
+struct Item {
+    var brandName: String
+    var itemName: String
+    var imageName: String
+    var price: String
+    var oldPrice: String?
+    var itemId: Int
+}
+
+class Storage {
+    static var itemList: [Item] = [
         Item(brandName: "New Balance",
              itemName: "New Balance 1906R",
              imageName: "NB",
@@ -41,4 +41,14 @@ class Items {
              price: "20 990",
              itemId: 4)
     ]
+    
+    func addItem(_ Item: Item) { // Добавление
+        Storage.itemList.append(Item)
+    }
+    
+    func removeItem(ItemId: Int) { // Удаление по ItemId
+        if let index = Storage.itemList.firstIndex(where: { $0.itemId == ItemId }) {
+            Storage.itemList.remove(at: index)
+        }
+    }
 }

@@ -15,20 +15,24 @@ class LayoutViewController: UIViewController {
     private var mainButton: UIButton?
     private var itemImage: UIImageView?
     private var itemIndex: Int = 0 // Индекс текущего товара
-    private var currentItem: Items.Item = Items.itemList[0]
+    private var currentItem: Item!
     
     
     override func viewDidLoad() {
-        currentItem = Items.itemList[itemIndex]
         super.viewDidLoad()
-        view.backgroundColor = .black
-        
-        setupButton()
-        setupItemCard(currentItem)
+        currentItem = Storage.itemList[itemIndex]
+        setupView()
+
 
         }
     
-    private func setupItemCard(_ item: Items.Item) { // Отображение карточки товара
+    private func setupView() {
+        view.backgroundColor = .black
+        setupButton()
+        setupItemCard(currentItem)
+    }
+    
+    private func setupItemCard(_ item: Item) { // Отображение карточки товара
         setupImageView(item.imageName)
         setupBrandName(item.brandName)
         setupPrice(item.price)
@@ -52,13 +56,23 @@ class LayoutViewController: UIViewController {
     }
 
     @objc private func didTapButton() { // Нажатием увеличиваем индекс, удаляем старую и отрисовываем новую карточку
-        itemIndex = (itemIndex + 1) % Items.itemList.count
-        
-        brandLabel?.text = Items.itemList[itemIndex].brandName
-        itemImage?.image = UIImage(named: Items.itemList[itemIndex].imageName)
-        titleLabel?.text = Items.itemList[itemIndex].itemName
-        priceLabel?.text = Items.itemList[itemIndex].price
+        nextIndex()
+        brandLabel?.text = currentItem.brandName
+        itemImage?.image = UIImage(named: currentItem.imageName)
+        titleLabel?.text = currentItem.itemName
+        priceLabel?.text = currentItem.price + " ₽"
 //        print(itemIndex)
+    }
+    
+    private func nextIndex() { // Меняет индекс для следующего товара
+        let arrayLength = Storage.itemList.count
+        
+        if itemIndex < arrayLength - 1 {
+            itemIndex += 1
+        } else {
+            itemIndex = 0
+        }
+        currentItem = Storage.itemList[itemIndex]
     }
     
     private func setupBrandName(_ brand: String) { // Название бренда
