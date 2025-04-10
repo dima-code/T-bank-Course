@@ -15,12 +15,11 @@ class LayoutViewController: UIViewController {
     private var mainButton: UIButton?
     private var itemImage: UIImageView?
     private var itemIndex: Int = 0 // Индекс текущего товара
-    private var currentItem: Item!
+    private var currentItem: Item = Storage.itemList[0]
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        currentItem = Storage.itemList[itemIndex]
         setupView()
 
 
