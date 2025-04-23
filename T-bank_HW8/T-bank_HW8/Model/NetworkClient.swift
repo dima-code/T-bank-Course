@@ -41,6 +41,7 @@ extension NetworkClient: NetworkClientInput {
         }
         task.resume()
     }
+    
     func post<ResponseSchema: Decodable>(
         urlString: String,
         requestBody: Encodable,
