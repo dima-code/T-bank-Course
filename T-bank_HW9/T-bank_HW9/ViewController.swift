@@ -29,7 +29,8 @@ class ViewController: UIViewController {
     }
     
     private func activityIndicator() {
-        let indicator = UIActivityIndicatorView(style: .medium)
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.color = .black
         view.addSubview(indicator)
         downloadingIndicator = indicator
     }
