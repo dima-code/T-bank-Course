@@ -40,9 +40,25 @@ class ViewController: UIViewController {
         button.setTitle("Загрузить картинки", for: .normal)
         button.backgroundColor = .black
         button.layer.cornerRadius = 12
+        
+        button.addTarget(self, action: #selector(buttonTouchDown), for: [.touchDown, .touchDragEnter])
+        button.addTarget(self, action: #selector(buttonTouchUp), for: [.touchUpInside, .touchUpOutside, .touchCancel, .touchDragExit])
+        
         button.addTarget(self, action: #selector(startDownloadingImages), for: .touchUpInside)
         view.addSubview(button)
         downloadButton = button
+    }
+    
+    @objc private func buttonTouchDown() {
+        UIView.animate(withDuration: 0.1) {
+            self.downloadButton?.backgroundColor = .black.withAlphaComponent(0.7)
+        }
+    }
+    
+    @objc private func buttonTouchUp() {
+        UIView.animate(withDuration: 0.1) {
+            self.downloadButton?.backgroundColor = .black
+        }
     }
     
     @objc func startDownloadingImages() {
