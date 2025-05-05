@@ -16,8 +16,6 @@ class NetworkClient {
     
     var downloadedImages = [Data]()
     
-    private lazy var view = ViewController()
-    
     func clearDownloadedImages() {
         downloadedImages = []
     }
