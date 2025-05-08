@@ -4,24 +4,20 @@
 //
 //  Created by Dmitrii Eselidze on 21.04.2025.
 //
-
 import UIKit
-import Alamofire
 
-class ViewController: UIViewController {
-    
-    private lazy var presenter = Presenter(view: self)
+final class ViewController: UIViewController, ViewInput {
+    private var presenter: Presenter!
     private var downloadingIndicator: UIActivityIndicatorView?
     
     var imagesStack = UIStackView()
     var downloadButton: UIButton?
-    var imagesNumber: Int {
-        presenter.images.count
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        presenter = Presenter(view: self, networkClient: NetworkClient())
+        
         activityIndicator()
         setupButton()
         setupImagesStack()
@@ -50,21 +46,19 @@ class ViewController: UIViewController {
     }
     
     @objc private func buttonTouchDown() {
-        UIView.animate(withDuration: 0.1) {
-            self.downloadButton?.backgroundColor = .black.withAlphaComponent(0.7)
-        }
-    }
-    
-    @objc private func buttonTouchUp() {
-        UIView.animate(withDuration: 0.1) {
-            self.downloadButton?.backgroundColor = .black
-        }
-    }
+           UIView.animate(withDuration: 0.1) {
+               self.downloadButton?.backgroundColor = .black.withAlphaComponent(0.7)
+           }
+       }
+
+       @objc private func buttonTouchUp() {
+           UIView.animate(withDuration: 0.1) {
+               self.downloadButton?.backgroundColor = .black
+           }
+       }
     
     @objc func startDownloadingImages() {
-        print("Download started")
-        downloadingIndicator?.startAnimating()
-        presenter.downoadImages()
+        presenter.downloadImages()
     }
     
     private func setupImagesStack() {
@@ -73,7 +67,7 @@ class ViewController: UIViewController {
         images.axis = .vertical
         images.spacing = 5
         
-        for _ in 0..<imagesNumber {
+        for _ in 0..<3 {
             let imageView = UIImageView()
             imageView.contentMode = .scaleAspectFit
             images.addArrangedSubview(imageView)
@@ -91,17 +85,12 @@ class ViewController: UIViewController {
         downloadButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            // Activity Indicator
-            downloadingIndicator?.centerYAnchor.constraint(equalTo: view.centerYAnchor) ?? .init(),
-            downloadingIndicator?.centerXAnchor.constraint(equalTo: view.centerXAnchor) ?? .init(),
-            
-            // Download Button
+            downloadingIndicator!.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            downloadingIndicator!.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             downloadButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             downloadButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             downloadButton.heightAnchor.constraint(equalToConstant: 60),
             downloadButton.widthAnchor.constraint(equalToConstant: 300),
-            
-            // Images Stack
             imagesStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             imagesStack.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             imagesStack.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -109,27 +98,26 @@ class ViewController: UIViewController {
         ])
     }
     
-    func stopActivityIndicator() {
+    func setDownloadButton(enabled: Bool) {
+        downloadButton?.isEnabled = enabled
+    }
+
+    func showLoading() {
+        downloadingIndicator?.startAnimating()
+    }
+
+    func hideLoading() {
         downloadingIndicator?.stopAnimating()
     }
-    
-    func updateImages(from imagesData: [Data]) {
-            guard !imagesData.isEmpty else {
-                print("Data storage is empty")
-                return
-            }
+
+    func showDownloadedImages(_ imagesData: [Data]) {
+        for (index, imageData) in imagesData.enumerated() {
+            guard index < imagesStack.arrangedSubviews.count,
+                  let imageView = imagesStack.arrangedSubviews[index] as? UIImageView else { continue }
             
-            for (index, imageData) in imagesData.enumerated() {
-                guard index < imagesStack.arrangedSubviews.count,
-                      let imageView = imagesStack.arrangedSubviews[index] as? UIImageView else {
-                    continue
-                }
-                
-                UIView.transition(with: imageView,
-                                duration: 0.3,
-                                options: .transitionCrossDissolve) {
-                    imageView.image = UIImage(data: imageData)
-                }
+            UIView.transition(with: imageView, duration: 0.3, options: .transitionCrossDissolve) {
+                imageView.image = UIImage(data: imageData)
             }
         }
+    }
 }
