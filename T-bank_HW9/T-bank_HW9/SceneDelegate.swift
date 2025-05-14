@@ -1,9 +1,4 @@
-//
 //  SceneDelegate.swift
-//  T-bank_HW9
-//
-//  Created by Dmitrii Eselidze on 21.04.2025.
-//
 
 import UIKit
 
