@@ -1,6 +1,3 @@
-<<<<<<< Updated upstream
-# T-bank-Course
-=======
 # 📱 T-bank Course — iOS и Swift
 
 > Учебные материалы и домашние работы по курсу **мобильной разработки под iOS** на **Swift**  
@@ -30,4 +27,3 @@
 `Swift` · `UIKit` · Storyboard / код · `URLSession` · **Alamofire** · **GCD** (`DispatchQueue`, `DispatchGroup`) · **CocoaPods** · **XCTest**
 
 ---
->>>>>>> Stashed changes
